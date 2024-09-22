@@ -17,22 +17,26 @@ class DiscutionController extends Controller
         $this->discutionInterface = $discutionInterface;
     }
 
-    public function send_m(DiscutionRequest $discutionRequest, $userId)
+    public function send_m(DiscutionRequest $discutionRequest, $userId, $userId2)
     {
-        $filePath = null;
+        $filePaths = [];
 
         if ($discutionRequest->hasFile('file')) {
 
-            $file = $discutionRequest->file('file');
-            $fileName = time() . '.' . $file->getClientOriginalExtension(); // Nom unique pour le fichier
-            $filePath = $file->storeAs('files', $fileName, 'public'); // Stockage de le fichier dans 'public/files'
+            $files = $discutionRequest->file('file');
 
+            foreach ($files as $file) {
+                $fileName = time() . rand(10000, 99999) . '.' . $file->getClientOriginalExtension(); // Nom unique pour le fichier
+                $filePath = $file->storeAs('files', $fileName, 'public'); // Stockage de le fichier dans 'public/files'
+                $filePaths[] = `/storage/` . $filePath;
+            }
         }
 
         $message = [
             'user_id' => $userId,
+            'user_id2' => $userId2,
             'message' => $discutionRequest->message,
-            'file' => $filePath
+            'file' => $filePaths
         ];
         DB::beginTransaction();
 
@@ -41,8 +45,8 @@ class DiscutionController extends Controller
             DB::commit();
 
             return ApiResponse::sendResponse(
-                true, 
-                [new UserResource(resource: $discution)], 
+                true,
+                [new UserResource(resource: $discution)],
                 'Opération effectuée.'
             );
         } catch (\Throwable $th) {
@@ -51,19 +55,27 @@ class DiscutionController extends Controller
             return $th;
             return ApiResponse::rollback($th);
         }
-
     }
 
-    public function show_m()
+    public function show_m($id1, $id2)
     {
-        $message = $this->discutionInterface->show_m();
+        $message = $this->discutionInterface->show_m($id1, $id2);
 
-        return ApiResponse::sendResponse(
-            true, 
-            $message, 
-            'Opération effectuée.'
-        );
+        if (!$message->isEmpty()) {
+            return ApiResponse::sendResponse(
+                true,
+                $message,
+                'Opération effectuée.'
+            );
+        } else {
+            return ApiResponse::sendResponse(
+                false,
+                [],
+                'Message introuvable.'
+            );
+        }
     }
+
 
     public function delete_m(string $id)
     {

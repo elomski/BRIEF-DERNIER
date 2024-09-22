@@ -19,18 +19,18 @@ Route::prefix('v1.0.0')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('checkOtpCode', [AuthController::class, 'checkOtpCode']);
 
+    Route::get('users_show/{id}', [UserController::class, 'show']);
+    Route::post('send_m/{userId}/{userId2}', [DiscutionController::class, 'send_m']);
+    Route::get('users_index', [UserController::class, 'index']);
+    Route::get('show_m/{id1}/{id2}', [DiscutionController::class, 'show_m']);
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('logout', [AuthController::class, 'logout']);
-        Route::get('users_index', [UserController::class, 'index']);
-        Route::get('users_show/{id}', [UserController::class, 'show']);
         Route::get('groupes_index', [GroupeController::class, 'index']);
         Route::get('groupes_show/{id}', [GroupeController::class, 'show']);
         Route::get('show_g_m', [GroupeDiscutionController::class, 'show_g_m']);
-        Route::get('show_m', [DiscutionController::class, 'show_m']);
         
         Route::post('new_groupe/{id}', [GroupeController::class, 'create']);
         Route::post('addMember/{userId}/{groupeId}', [GroupeMemberController::class, 'addMember']);
-        Route::post('send_m/{userId}', [DiscutionController::class, 'send_m']);
         Route::post('send_g_m/{userId}/{groupeId}', [GroupeDiscutionController::class, 'send_g_m']);
         Route::post('addOtherMember/{groupeId}/{userId}/{url}', [OtherGroupeMembeController::class, 'addOtherMember']);
 

@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->longText('message')->nullable();
-            $table->string('file')->nullable();
+            $table->unsignedBigInteger('user_id2');
+            $table->boolean('if_me')->default(false);
+            $table->longText('file')->nullable();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
 

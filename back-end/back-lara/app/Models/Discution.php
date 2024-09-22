@@ -13,6 +13,7 @@ class Discution extends Model
         'user_id',
         'message',
         'file',
+        'user_id2'
     ];
 
     public function users()

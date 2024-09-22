@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('groupe_id')->nullable();
-            $table->string('message');
+            $table->longText('message');
             $table->string('file')->nullable();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
