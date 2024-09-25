@@ -28,11 +28,18 @@ class GroupeMemberController extends Controller
             $user = $this->groupeMemberInterface->addMember($add);
             DB::commit();
 
-            return ApiResponse::sendResponse(
-                true,
-                [new UserResource($user)],
-                'Opération effectuée.'
-            );
+            if ($user)
+                return ApiResponse::sendResponse(
+                    true,
+                    [new UserResource($user)],
+                    'Opération effectuée.'
+                );
+            else
+                return ApiResponse::sendResponse(
+                    false,
+                    [],
+                    'Déjà membre du groupe.'
+                );
         } catch (\Throwable $th) {
             //throw $th;
             return $th;

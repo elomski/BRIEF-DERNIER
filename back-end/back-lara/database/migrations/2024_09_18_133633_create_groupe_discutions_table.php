@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('groupe_id')->nullable();
             $table->longText('message');
             $table->string('file')->nullable();
+            $table->String('file_type')->default(0);
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
             $table->foreign('groupe_id')->references('id')->on('groupes')->onDelete('cascade');

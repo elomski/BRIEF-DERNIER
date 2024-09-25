@@ -30,7 +30,7 @@ export default function OtpCodeForm() {
             toast.success(checkOtpCodeResponse.message);
             setIsLoading(false);
             setTimeout(function () {
-                navigate("/dashboard");
+                navigate("/");
             }, 1000);
             console.log(params.email);
             console.log(checkOtpCodeResponse.message);

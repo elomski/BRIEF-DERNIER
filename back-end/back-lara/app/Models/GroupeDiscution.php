@@ -14,6 +14,7 @@ class GroupeDiscution extends Model
         'groupe_id',
         'message',
         'file',
+        'file_type',
     ];
 
     public function user()

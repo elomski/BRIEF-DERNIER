@@ -20,12 +20,14 @@ class GroupeDiscutionController extends Controller
     public function send_g_m(GroupeDiscutionRequest $groupeDiscutionRequest, $userId, $groupeId)
     {
         $filePath = null;
+        $fileType = [];
 
         if ($groupeDiscutionRequest->hasFile('file')) {
 
             $file = $groupeDiscutionRequest->file('file');
             $fileName = time() . '.' . $file->getClientOriginalExtension(); // Nom unique pour le fichier
             $filePath = $file->storeAs('files', $fileName, 'public'); // Stockage de le fichier dans 'public/files'
+            $fileType[] = $file->getClientOriginalExtension();
 
         }
 
@@ -33,7 +35,8 @@ class GroupeDiscutionController extends Controller
             'user_id' => $userId,
             'groupe_id' => $groupeId,
             'message' => $groupeDiscutionRequest->message,
-            'file' => $filePath
+            'file' => $filePath,
+            'file_type' => $fileType
         ];
         DB::beginTransaction();
 

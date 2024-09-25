@@ -17,6 +17,7 @@ const textDivRightCss = {
     backgroundColor: "#FFCFCF",
     borderRadius: '10px 0px 10px 10px',
     padding: '10px',
+    width: 'auto',
     maxWidth: '340px',
     wordWrap: 'break-word',
     // minWidth: '50px'
@@ -59,6 +60,36 @@ const triangleLeftCss = {
     left: '5px',
 }
 
+const fileDivCss = {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr 1fr',
+    gap: '10px',
+    width: 'auto',
+    maxWidth: '320px',
+    height: 'auto',
+    // backgroundColor: 'red'
+}
+
+const fileDiv2Css = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '5px',
+    // flex
+    width: 'auto',
+    maxWidth: '320px',
+    height: 'auto',
+    // backgroundColor: 'red'
+}
+
+const fileCss = {
+    width: '100px',
+    height: '100px',
+    maxWidth: '150px',
+    maxHeight: '100px',
+    // backgroundColor: 'blue',
+    borderRadius: '10px'
+}
+
 export const DiscussionCss = {
     leftDiscCss,
     rightDiscCss,
@@ -66,5 +97,8 @@ export const DiscussionCss = {
     finalTextDivCss,
     triangleRightCss,
     triangleLeftCss,
-    textDivLeftCss
+    textDivLeftCss,
+    fileDivCss,
+    fileDiv2Css,
+    fileCss
 }

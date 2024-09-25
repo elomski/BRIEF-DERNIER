@@ -53,14 +53,14 @@ const sectionBottomCss = {
     width: '95%',
     height: '77%',
     display: 'flex',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     overflowY: 'scroll',
     overflowX: 'hidden',
     alignItems: 'center',
     flexDirection: 'column',
     // backgroundColor: 'blue',
     // borderRadius: '20px 20px 0 0',
-    padding: '250px 0 0 0',
+    padding: '15px 0 0 0',
     margin: '0 0 10px 0',
     backgroundImage: 'linear-gradient(to bottom, #E8E8FF, white)',
 }
@@ -85,12 +85,12 @@ const allUserCss = {
     height: '60px',
     display: 'flex',
     padding: '5px 8px',
-    margin: '5px 0 0 5px',
+    margin: '5px 0 5px 0',
     // justifyContent: 'center',
     alignItems: 'center',
     gap: '8px',
     // backgroundColor: '#ccc',
-    borderRadius: '20px',
+    // borderRadius: '80px',
 }
 
 const profilCss = {
@@ -137,8 +137,6 @@ const iconesMenuCss = {
     gap: '25px',
     // backgroundColor: 'red',
     padding: '0 0 6px 0',
-    border: 'solid black',
-    borderWidth: '0 0 5px 0',
     // borderStyle: 'solide',
 }
 
@@ -146,7 +144,7 @@ const discussioninputCss = {
     width: '100%',
     // backgroundColor: 'red',
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'end',
     justifyContent: 'center',
     gap: '10px',
     padding: '0 0 10px 0'
@@ -178,7 +176,7 @@ const fileButton = {
 }
 
 const inputCss = {
-    width: '60%',
+    width: '88%',
     // backgroundColor: '#D9D9D9',
     color: 'black',
     height: '20px',
@@ -190,6 +188,28 @@ const inputCss = {
     maxHeight: '250px',
     border: '1px solid black'
     // margin: '0 5px 0 0',
+}
+
+const anyInuptsCss = {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    gap: '10px',
+    padding: '0 0 10px 0',
+    // backgroundColor: 'red'
+}
+
+const filesZonesCss = {
+    width: '350px',
+    maxHeight: '150px',
+    overflowY: 'scroll',
+    overflowX: 'hidden',
+    backgroundColor: 'white',
+    textAlign: 'left',
+    padding: '0 0 0 10px',
+    margin: '0',
+    borderRadius: '10px',
 }
 
 export const BoxCss = {
@@ -207,6 +227,8 @@ export const BoxCss = {
     discussioninputCss,
     discussionButton,
     fileButton,
-    inputCss
+    inputCss,
+    anyInuptsCss,
+    filesZonesCss
 
 }
