@@ -2,19 +2,19 @@ import React from 'react'
 
 const leftDiscCss = {
     // backgroundColor: "red",
-    width: '100%',
+    width: 'auto',
     display: "grid",
     gridTemplateColumns: "auto 1fr",
 }
 const rightDiscCss = {
     // backgroundColor: "red",
-    width: '100%',
+    width: 'auto',
     display: "grid",
     gridTemplateColumns: "1fr auto",
 }
 
 const textDivRightCss = {
-    backgroundColor: "#FFCFCF",
+    backgroundColor: "#212121",
     borderRadius: '10px 0px 10px 10px',
     padding: '10px',
     width: 'auto',
@@ -24,7 +24,7 @@ const textDivRightCss = {
 }
 
 const textDivLeftCss = {
-    backgroundColor: "#CECECE",
+    backgroundColor: "#212121",
     borderRadius: '0px 10px 10px 10px',
     padding: '10px',
     maxWidth: '340px',
@@ -41,7 +41,7 @@ const triangleRightCss = {
     height: '0',
     borderLeft: '10px solid transparent',
     borderRight: '10px solid transparent',
-    borderBottom: '10px solid #FFCFCF',
+    borderBottom: '10px solid #212121',
     rotate: '90deg',
     position: 'relative',
     top: '5px',
@@ -53,7 +53,7 @@ const triangleLeftCss = {
     height: '0',
     borderLeft: '10px solid transparent',
     borderRight: '10px solid transparent',
-    borderBottom: '10px solid #CECECE',
+    borderBottom: '10px solid #212121',
     rotate: '-90deg',
     position: 'relative',
     top: '5px',

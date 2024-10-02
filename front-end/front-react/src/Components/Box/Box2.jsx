@@ -12,9 +12,11 @@ import FormInput from '../Inputs/FormInput';
 import moment from 'moment/moment';
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
+import { CgAdd, CgAddR, CgUserAdd } from 'react-icons/cg';
+import { BiAddToQueue } from 'react-icons/bi';
 // import { format } from 'date-fns';
 
-export default function Box2({ userSelection, userDiscussion }) {
+export default function Box2({ userSelection, userDiscussion, groupeSelection }) {
 
   // const [userId2, setUserId2] = useState(null);
   const [userImage2, setUserImage2] = useState(null);
@@ -22,14 +24,17 @@ export default function Box2({ userSelection, userDiscussion }) {
   const [username2, setUsername2] = useState(null);
   const [name2, setName2] = useState(null);
   const [inputMessage, setInputMessage] = useState('');
-  const [groupeMessage, setGroupeMessage] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [allMessage, setAllMessage] = useState([]);
+
+  const [groupeMessage, setGroupeMessage] = useState([]);
+  // const [allGroupeMessage, setAllGroupeMessage] = useState([]);
 
   const [isLoading, setIsLoading] = useState(true);
   const [messageIsLoading, setMessageIsLoading] = useState(true);
   const UserId1 = localStorage.getItem('userId');
   const UserId2 = localStorage.getItem('user_id2');
+  const groupeId = localStorage.getItem('group_id');
 
   useEffect(() => {
     if (userSelection) {
@@ -50,7 +55,30 @@ export default function Box2({ userSelection, userDiscussion }) {
 
     }
     userRequestFunction();
+    // groupeMessageFunction();
   }, [userSelection]);
+
+  useEffect(() => {
+    if (groupeSelection) {
+      setIsLoading(false); // Données prêtes
+
+      setUsername2(() => groupeSelection.name);
+      setUserImage2(() => groupeSelection.image);
+      // setUserId2(() => localStorage.getItem('user_id2'));
+      // console.log(UserId2 + 'dfsv')
+      // setUsername(userResponse.data.username);
+      setName2(() => groupeSelection.description);
+
+      //------------------------------------
+      setMessageIsLoading(false);
+      // fetchMessages();
+
+      // console.log(userId2)
+
+    }
+    // userRequestFunction();
+    groupeMessageFunction();
+  }, [groupeSelection]);
 
   //   const fetchMessages = async () => {
   //     const allMessagesResponse = await getRequest(`show_m/${UserId1}/${UserId2}`);
@@ -82,8 +110,10 @@ export default function Box2({ userSelection, userDiscussion }) {
 
   const groupeMessageFunction = async (e) => {
     // Récupérer l'ID de l'utilisateur à partir du localStorage
-    // const messageResponse = await getRequest(`show_m/${UserId1}/${UserId2}`);
-    setGroupeMessage(() => messageResponse.data)
+    const messageResponse = await getRequest(`show_g_m/${groupeId}`);
+    setAllMessage(() => messageResponse.data)
+    console.log(messageResponse.data);
+
     // let newUsername = userResponse.data.username
     // console.log(UserId1)
     // console.log(UserId2)
@@ -95,7 +125,8 @@ export default function Box2({ userSelection, userDiscussion }) {
   useEffect(() => {
 
     // setUserId(storedUserId); // Mettre à jour le state avec l'ID de l'utilisateur
-    userRequestFunction();
+    // userRequestFunction();
+    groupeMessageFunction();
     // console.log(storedUserId)
     // console.log(userId)
     // console.log(username2)
@@ -128,10 +159,16 @@ export default function Box2({ userSelection, userDiscussion }) {
       // setUsername2(() => '')
     }
     // messageFormData.append('file[]', selectedFiles)
+    let messageUrl = '';
 
-    const messageUrl = 'send_m/' + localStorage.getItem('userId') + '/' + UserId2;
-    // const messageUrl = 'send_m/' + localStorage.getItem('userId') + '/' + UserId2;
-
+    if (localStorage.getItem('gropueVSuser') === 'users') {
+      console.log('users');
+      messageUrl = 'send_m/' + localStorage.getItem('userId') + '/' + UserId2;
+    }
+    else {
+      console.log('groupe');
+      messageUrl = 'send_g_m/' + UserId1 + '/' + localStorage.getItem('groupe_id');
+    }
 
     console.log(userSelection)
     console.log(userDiscussion)
@@ -139,7 +176,7 @@ export default function Box2({ userSelection, userDiscussion }) {
 
     if (messageResponse.success) {
       setInputMessage('');
-      // console.log(messageResponse)
+      console.log(messageResponse)
     } else {
       // console.error(messageResponse);
     }
@@ -203,6 +240,7 @@ export default function Box2({ userSelection, userDiscussion }) {
   useEffect(() => {
     // Récupérer les messages initialement
     userRequestFunction();
+    groupeMessageFunction();
 
     // Mettre à jour les messages toutes les 5 secondes
     // const intervalId = setInterval(() => {
@@ -248,7 +286,7 @@ export default function Box2({ userSelection, userDiscussion }) {
       `}
       </style>
       <div style={BoxCss.sectionTopCss}>
-        {!isLoading ? (userSelection ? (
+        {!isLoading ? (userSelection || groupeSelection ? (
           <div style={BoxCss.profilDivCss}>
             <img src={`http://localhost:8000/storage/${userImage2}`} alt={username2} style={BoxCss.profilCss}>
             </img>
@@ -267,8 +305,12 @@ export default function Box2({ userSelection, userDiscussion }) {
           </div>
         ) : (
           <p>Aucun utilisateur sélectionné.</p>
-        )) : (<p>Chargement...</p>)}
+        )) : (
+          <p>Chargement...</p>
+        )
+        }
         <div style={BoxCss.topIconesCss}>
+          <CgUserAdd size={30} />
           <GoKebabHorizontal size={30} />
         </div>
       </div>
@@ -292,8 +334,10 @@ export default function Box2({ userSelection, userDiscussion }) {
                 />
               ))
             )) : (
-            <p>Aucune discussion trouvé</p>
-          )) : (<p>Chargement de la discussion...</p>)
+            <div style={BoxCss.noMessage}>Aucune discussion trouvé</div>
+          )) : (
+            <div style={BoxCss.noMessage}>Chargement de la discussion...</div>
+          )
         }
         {/* <Discussion_right text={'Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l imprimerie depuis les années 1500, quand un imprimeur anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte. Il n a pas fait que survivre cinq siècles, mais s est aussi adapté à la bureautique informatique, sans que son contenu n en soit modifié.'} time={'00:00'} /> */}
         {/* <Discussion_right text={'.'} time={'00:00'} /> */}

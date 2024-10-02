@@ -1,26 +1,26 @@
 import React from 'react'
 
 const container1Css = {
-    width: '360px',
-    height: '90vh',
+    width: '420px',
+    height: '100vh',
     display: 'flex',
     // justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    backgroundColor: 'white',
-    borderRadius: '20px',
+    backgroundColor: '#212121',
+    // borderRadius: '20px',
     gap: '10px'
 }
 
 const container2Css = {
-    width: '500px',
-    height: '90vh',
+    width: '100%',
+    height: '100vh',
     display: 'flex',
-    // justifyContent: 'center',
+    justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    backgroundColor: 'white',
-    borderRadius: '20px',
+    // backgroundColor: 'red',
+    // borderRadius: '20px',
     // gap: '10px'
 }
 
@@ -33,7 +33,7 @@ const sectionTopCss = {
     // justifyContent: 'center',
     // alignItems: 'center',
     // gap: '80px',
-    // backgroundColor: 'green',
+    backgroundColor: '#212121',
     // borderRadius: '20px',
 }
 
@@ -62,7 +62,7 @@ const sectionBottomCss = {
     // borderRadius: '20px 20px 0 0',
     padding: '15px 0 0 0',
     margin: '0 0 10px 0',
-    backgroundImage: 'linear-gradient(to bottom, #E8E8FF, white)',
+    color: 'white'
 }
 
 const profilDivCss = {
@@ -84,19 +84,19 @@ const allUserCss = {
     maxWidth: '100%',
     height: '60px',
     display: 'flex',
-    padding: '5px 8px',
-    margin: '5px 0 5px 0',
+    padding: '5px 0',
+    // margin: '5px 0 5px 0',
     // justifyContent: 'center',
     alignItems: 'center',
     gap: '8px',
     // backgroundColor: '#ccc',
-    // borderRadius: '80px',
+    borderRadius: '10px',
 }
 
 const profilCss = {
     width: '60px',
     height: '60px',
-    borderRadius: '25px',
+    borderRadius: '30px',
 }
 
 const topIconesCss = {
@@ -112,7 +112,7 @@ const topIconesCss = {
 }
 
 const discussionCss = {
-    width: '95%',
+    width: '100%',
     height: '77%',
     display: 'flex',
     justifyContent: 'center',
@@ -154,7 +154,7 @@ const discussioninputCss = {
 const discussionButton = {
     // width: '30px',
     // height: '30px',
-    backgroundColor: 'green',
+    backgroundColor: '#8774E1',
     color: 'white',
     cursor: 'pointer',
     borderRadius: '20px',
@@ -166,19 +166,19 @@ const discussionButton = {
 const fileButton = {
     // width: '30px',
     // height: '30px',
-    backgroundColor: '#D9D9D9',
-    color: 'black',
+    backgroundColor: '#212121',
     cursor: 'pointer',
     borderRadius: '20px',
     padding: '8px 9px',
-    border: 'none'
+    border: 'none',
+    color: 'white'
     // margin: '0 5px 0 0',
 }
 
 const inputCss = {
     width: '88%',
-    // backgroundColor: '#D9D9D9',
-    color: 'black',
+    backgroundColor: '#212121',
+    color: 'white',
     height: '20px',
     cursor: 'pointer',
     borderRadius: '20px',
@@ -212,6 +212,16 @@ const filesZonesCss = {
     borderRadius: '10px',
 }
 
+const noMessage = {
+    width: '350px',
+    Height: '550px',
+    backgroundColor: 'red',
+    textAlign: 'left',
+    padding: '0 0 0 10px',
+    margin: '0',
+    borderRadius: '10px',
+}
+
 export const BoxCss = {
     container1Css,
     sectionTopCss,
@@ -229,6 +239,7 @@ export const BoxCss = {
     fileButton,
     inputCss,
     anyInuptsCss,
-    filesZonesCss
+    filesZonesCss,
+    noMessage
 
 }

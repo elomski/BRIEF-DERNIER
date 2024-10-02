@@ -28,7 +28,9 @@ body {
   /* place-items: center; */
   /* min-width: 320px; */
   min-height: 100vh;
-  background-color: rgb(89, 89, 89);
+  background-image: url(./assets/Capture.png);
+  color: white;
+  font-family: Georgia;
 }
 /* 
 h1 {

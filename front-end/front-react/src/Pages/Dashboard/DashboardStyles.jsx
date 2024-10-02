@@ -1,14 +1,11 @@
 import React from 'react'
 
 const containerCss = {
-    width: '100vh',
-    height: '100vh',
+    width: '100%',
+    // height: '100vh',
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    justifyItems: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '50px'
+    gridTemplateColumns: '1fr 3fr',
+    gap: '1px'
 }
 
 export const DashboardCss = {

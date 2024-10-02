@@ -55,10 +55,8 @@ class GroupeRepository implements GroupeInterface
         // $userAndGroupe = DB::table('groupe_members')
         //                 ->where('user_id', $id);
 
-        $index = 0;
         foreach ($groupe_id as $id) {
-            $groupes[$index] = Groupe::find($id);
-            $index++;
+            array_push($groupes, Groupe::find($id));
         }
 
         return $groupes;

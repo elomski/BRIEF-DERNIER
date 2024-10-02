@@ -22,9 +22,11 @@ class DiscutionController extends Controller
 
     public function send_m(DiscutionRequest $discutionRequest, $userId, $userId2)
     {
-        $filePaths = [];
         $if_fille = false;
-        $fileType = [];
+        $filePaths = [];
+        $fileOriginalName = [];
+        $fileOriginalType = [];
+        $fileOriginalSize = [];
 
         if ($discutionRequest->hasFile('file')) {
 
@@ -33,10 +35,15 @@ class DiscutionController extends Controller
             $if_fille = true;
 
             foreach ($files as $file) {
+                $fileOriginalName[] = $file->getClientOriginalName();
+                $fileOriginalType[] = $file->getClientOriginalExtension();
+                $fileOriginalSize[] = $file->getSize();
+
                 $fileName = time() . rand(10000, 99999) . '.' . $file->getClientOriginalExtension(); // Nom unique pour le fichier
                 $filePath = $file->storeAs(`/files/`, $fileName, 'public'); // Stockage de le fichier dans 'public/files'
+                
                 $filePaths[] = `/storage/` . $filePath;
-                $fileType[] = $file->getClientOriginalExtension();
+                $fileOriginalType[] = $file->getClientOriginalExtension();
             }
         }
 
@@ -45,7 +52,9 @@ class DiscutionController extends Controller
             'user_id2' => $userId2,
             'message' => $discutionRequest->message,
             'file' => $filePaths,
-            'file_type' => $fileType
+            'file_type' => $fileOriginalType,
+            'file_size' => $fileOriginalSize,
+            'file_name' => $fileOriginalName,
         ];
         DB::beginTransaction();
 

@@ -15,6 +15,8 @@ class GroupeDiscution extends Model
         'message',
         'file',
         'file_type',
+        'file_name',
+        'file_size'
     ];
 
     public function user()

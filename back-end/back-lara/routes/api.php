@@ -27,7 +27,7 @@ Route::prefix('v1.0.0')->group(function () {
     Route::get('groupes_index', [GroupeController::class, 'index']);
     Route::get('one_groupes_show/{id}', [GroupeController::class, 'show']);
     Route::get('showAllForUser/{id}', [GroupeController::class, 'showAllForUser']);
-    Route::get('show_g_m', [GroupeDiscutionController::class, 'show_g_m']);
+    Route::get('show_g_m/{groupId}', [GroupeDiscutionController::class, 'show_g_m']);
     
     Route::post('new_groupe/{id}', [GroupeController::class, 'create']);
     Route::post('addMember/{userId}/{groupeId}', [GroupeMemberController::class, 'addMember']);

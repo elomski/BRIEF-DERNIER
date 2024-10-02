@@ -6,7 +6,7 @@ import { getRequest } from '../../js/httpRequest/axios';
 import { MdContacts } from 'react-icons/md';
 import { FaLockOpen, FaUserGroup } from 'react-icons/fa6';
 
-export default function Box1({ setUserSelection, setUserDiscussion }) {
+export default function Box1({ setUserSelection, setUserDiscussion, setGroupeSelection, setAddGroup }) {
     // export default function Box1() {
 
     // const handleUserClick1 = (user) => {
@@ -18,6 +18,7 @@ export default function Box1({ setUserSelection, setUserDiscussion }) {
         localStorage.setItem('image', user.image); // Enregistre l'ID de l'utilisateur dans le localStorage(user);
         localStorage.setItem('first_name', user.first_name); // Enregistre l'ID de l'utilisateur dans le localStorage(user);
         localStorage.setItem('last_name', user.last_name); // Enregistre l'ID de l'utilisateur dans le localStorage(user);
+        localStorage.setItem('gropueVSuser', 'users'); // Enregistre l'ID de l'utilisateur dans le localStorage(user);
         setUserSelection(user); // Met à jour l'état partagé
     };
     const handleGroupeClick1 = (groupe) => {
@@ -25,8 +26,9 @@ export default function Box1({ setUserSelection, setUserDiscussion }) {
         localStorage.setItem('groupeDescription', groupe.description);
         localStorage.setItem('groupeImage', groupe.image);
         localStorage.setItem('groupe_id', groupe.id)
+        localStorage.setItem('gropueVSuser', 'groupes'); // Enregistre l'ID de l'utilisateur dans le localStorage(user);
         setGroupeId(() => groupe.id)
-        // setUserSelection(groupe);
+        setGroupeSelection(groupe);
     };
 
     // const handleUserClick2 = (message) => {
@@ -138,6 +140,7 @@ export default function Box1({ setUserSelection, setUserDiscussion }) {
         userRequestFunction();
         // groupeRequestFunction();
         groupeRequestFunction();
+        // localStorage.setItem('if_add_groups', '0');
         // console.log(storedUserId)
         // console.log(userId)
         // console.log(username)
@@ -146,6 +149,10 @@ export default function Box1({ setUserSelection, setUserDiscussion }) {
 
     const onIconeClique = (listScreen) => {
         setListScreen(() => listScreen)
+    };
+    
+    const onGroupeIconeClique = () => {
+        setAddGroup(() => true);
     };
 
     return (
@@ -157,7 +164,7 @@ export default function Box1({ setUserSelection, setUserDiscussion }) {
                         transition-duration: 500ms;
                     }
                     .hoverUserActive {
-                        background-color: #0077ff56;
+                        background-color: #8774E1;
                     }
                     .hoverUser:active {
                         background-color: yellow;
@@ -183,7 +190,7 @@ export default function Box1({ setUserSelection, setUserDiscussion }) {
                     }
                     .iconesActive {
                         border-style: solid;
-                        border-color: black;
+                        border-color: #6E5FB1;
                         border-width: 0 0 5px 0;
                         // background-color: red
                     }
@@ -207,8 +214,17 @@ export default function Box1({ setUserSelection, setUserDiscussion }) {
                     </div>
                 </div>
                 <div style={BoxCss.topIconesCss}>
-                    <IoMdPersonAdd className='icones' size={30} />
-                    <IoCreate className='icones' size={30} />
+                    <IoMdPersonAdd
+                        className='icones'
+                        color='#6E5FB1'
+                        size={30}
+                    />
+                    <IoCreate
+                        className='icones'
+                        color='#6E5FB1'
+                        size={30}
+                        onClick={() => (onGroupeIconeClique())}
+                    />
                 </div>
             </div>
             <div style={BoxCss.sectionCenterCss}>
@@ -216,18 +232,21 @@ export default function Box1({ setUserSelection, setUserDiscussion }) {
                     <MdContacts
                         className='icones'
                         size={30}
+                        color='#6E5FB1'
                         onClick={() => (onIconeClique('1'))}
                     />
                 </div>
                 <div className={listScreen === '2' ? 'iconesActive' : ''} style={BoxCss.iconesMenuCss}>
                     <FaUserGroup
                         className='icones'
+                        color='#6E5FB1'
                         size={30}
                         onClick={() => (onIconeClique('2'))}
                     />
                 </div>
                 <div className={listScreen === '3' ? 'iconesActive' : ''} style={BoxCss.iconesMenuCss}>
                     <IoSettingsSharp
+                        color='#6E5FB1'
                         className='icones'
                         size={30}
                         onClick={() => (onIconeClique('3'))}
@@ -271,7 +290,7 @@ export default function Box1({ setUserSelection, setUserDiscussion }) {
                                         <FaLockOpen />
                                     </div>
                                 ) : (null)
-    
+
                             ))
                         ) : (
                             <p>Aucun utilisateur trouvé</p>
@@ -285,7 +304,8 @@ export default function Box1({ setUserSelection, setUserDiscussion }) {
                                         className={groupeId == group.id ? 'hoverUserActive' : 'hoverUser'}
                                         key={group.id}
                                         onClick={() => (
-                                            handleGroupeClick1(group)
+                                            handleGroupeClick1(group),
+                                            localStorage.setItem('group_id', group.id)
                                             // setUserId2(() => group.id),
                                             // console.log(userId2),
                                             // console.log('id2   ' + localStorage.getItem('user_id2')),
@@ -307,13 +327,13 @@ export default function Box1({ setUserSelection, setUserDiscussion }) {
                                         </div>
                                     </div>
                                 ) : (null)
-    
+
                             ))
                         ) : (
                             <p>Aucun groupe trouvé</p>
                         )
                     ) : listScreen === '3' ? (null) : (null)
-                    
+
                 }
             </div>
         </div>
