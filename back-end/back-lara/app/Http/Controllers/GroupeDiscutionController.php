@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageSent;
 use App\Http\Requests\GroupeDiscutionRequest;
 use App\Http\Resources\UserResource;
 use App\Interfaces\GroupeDiscutionInterface;
@@ -19,26 +20,45 @@ class GroupeDiscutionController extends Controller
 
     public function send_g_m(GroupeDiscutionRequest $groupeDiscutionRequest, $userId, $groupeId)
     {
-        $filePath = null;
+        $if_fille = false;
+        $filePaths = [];
+        $fileOriginalName = [];
+        $fileOriginalType = [];
+        $fileOriginalSize = [];
 
         if ($groupeDiscutionRequest->hasFile('file')) {
 
-            $file = $groupeDiscutionRequest->file('file');
-            $fileName = time() . '.' . $file->getClientOriginalExtension(); // Nom unique pour le fichier
-            $filePath = $file->storeAs('files', $fileName, 'public'); // Stockage de le fichier dans 'public/files'
+            $files = $groupeDiscutionRequest->file('file');
 
+            $if_fille = true;
+
+            foreach ($files as $file) {
+                $fileOriginalName[] = $file->getClientOriginalName();
+                $fileOriginalType[] = $file->getClientOriginalExtension();
+                $fileOriginalSize[] = $file->getSize();
+
+                $fileName = time() . rand(10000, 99999) . '.' . $file->getClientOriginalExtension(); // Nom unique pour le fichier
+                $filePath = $file->storeAs(`/files/`, $fileName, 'public'); // Stockage de le fichier dans 'public/files'
+                
+                $filePaths[] = `/storage/` . $filePath;
+                $fileOriginalType[] = $file->getClientOriginalExtension();
+            }
         }
 
         $message = [
             'user_id' => $userId,
             'groupe_id' => $groupeId,
             'message' => $groupeDiscutionRequest->message,
-            'file' => $filePath
+            'file' => $filePaths,
+            'file_type' => $fileOriginalType,
+            'file_size' => $fileOriginalSize,
+            'file_name' => $fileOriginalName,
         ];
+
         DB::beginTransaction();
 
         try {
-            $groupeDiscution = $this->groupeDiscutionInterface->send_g_m($message);
+            $groupeDiscution = $this->groupeDiscutionInterface->send_g_m($message, $if_fille);
             DB::commit();
 
             return ApiResponse::sendResponse(
@@ -55,11 +75,11 @@ class GroupeDiscutionController extends Controller
 
     }
 
-    public function show_g_m()
+    public function show_g_m(string $groupId)
     {
-        $groupeMessages = $this->groupeDiscutionInterface->show_g_m();
+        $groupeMessages = $this->groupeDiscutionInterface->show_g_m($groupId);
 
-        return ApiResponse::sendResponse(true, UserResource::collection($groupeMessages), 'Opération effectuée.');
+        return ApiResponse::sendResponse(true, $groupeMessages, 'Opération effectuée.');
     }
 
     public function delete_g_m(string $id)

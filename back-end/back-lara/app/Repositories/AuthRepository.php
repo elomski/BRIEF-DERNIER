@@ -39,7 +39,7 @@ class AuthRepository implements AuthInterface
 
         Mail::to($email)->send(
             new OtpCodeEmail(
-                $data['last_name'],
+                $data['username'],
                 $otp_code['otp_code']
             )
         );
@@ -91,11 +91,11 @@ class AuthRepository implements AuthInterface
         } else {
             $email = $data['email'];
 
-            $check_if_in_groupes = OtherGroupeMember::where('email', $email)->first();
+            $check_if_in_groupes = OtherGroupeMember::where('email', $email);
 
             $userId = User::where('email', $email)->first();
-            // $userId->is_confirm = true;
-            // $userId->save();
+            $userId->is_confirm = true;
+            $userId->save();
 
             if ($check_if_in_groupes) {
                 foreach ($check_if_in_groupes as $check_if_in_groupe) {

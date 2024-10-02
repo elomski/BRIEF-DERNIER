@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('groupes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('admin_id')->nullable();
             $table->string('name')->unique();
             $table->string('description')->nullable();
             $table->string('image')->nullable();
 
-            $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
+            $table->foreign('admin_id')->references('id')->on('users')->nullOnDelete();
 
             $table->timestamps();
         });

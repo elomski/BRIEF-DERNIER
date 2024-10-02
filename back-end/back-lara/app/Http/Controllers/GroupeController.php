@@ -26,11 +26,14 @@ class GroupeController extends Controller
 
     public function create(GroupeRequest $groupeRequest, $id)
     {
+
+        $filePath = 'groupe_image\4-01.jpg';
+
         $groupeData = [
             'user_id' => $id,
             'name' => $groupeRequest->name,
             'description' => $groupeRequest->description,
-            // 'image' => $groupeRequest,
+            'image' => $filePath,
         ];
 
         DB::beginTransaction();
@@ -70,5 +73,29 @@ class GroupeController extends Controller
         $groupe = $this->groupeInterface->show($id);
 
         return ApiResponse::sendResponse(true, [new UserResource($groupe)], 'Opération effectuée.');
+    }
+
+    public function showOne(string $id)
+    {
+        $groupe = $this->groupeInterface->showOne($id);
+
+        return ApiResponse::sendResponse(true, [new UserResource($groupe)], 'Opération effectuée.');
+    }
+
+    public function showForUser(string $id)
+    {
+        $groupe = $this->groupeInterface->showForUser($id);
+
+        return ApiResponse::sendResponse(true, [new UserResource($groupe)], 'Opération effectuée.');
+    }
+
+    public function showAllForUser(string $id)
+    {
+        $groupe = $this->groupeInterface->showAllForUser($id);
+
+        if ($groupe)
+            return ApiResponse::sendResponse(true, [new UserResource($groupe)], 'Opération effectuée.');
+        else
+            return ApiResponse::sendResponse(false, [], 'Utilisateur introuvable.', $groupe ? 200 : 400);
     }
 }

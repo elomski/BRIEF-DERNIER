@@ -22,7 +22,7 @@ class GroupeDiscutionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => 'nullable|mimes:jpeg,png,jpg,pdf,doc,docx,xlsx|max:20048',
+            'file.*' => 'nullable|mimes:jpeg,png,jpg,zip,mp4,pdf,doc,docx,xlsx|max:2048',
         ];
     }
 

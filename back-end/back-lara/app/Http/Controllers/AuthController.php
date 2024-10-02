@@ -9,6 +9,7 @@ use App\Interfaces\AuthInterface;
 use App\Responces\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Str;
 
 class AuthController extends Controller
 {
@@ -22,23 +23,28 @@ class AuthController extends Controller
     public function register(AuthRequest $authRequest)
     {
 
-        $filePath = null;
+        $filePath = 'profil_images\image_placeholder\placeholder_full.png';
 
-        if ($authRequest->hasFile('image')) {
+        // if ($authRequest->hasFile('image')) {
 
-            $image = $authRequest->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension(); // Nom unique pour l'image
-            $filePath = $image->storeAs('profil_images', $imageName, 'public'); // Stockage de l'image dans 'public/profile_images'
+        //     $image = $authRequest->file('image');
+        //     $imageName = time() . '.' . $image->getClientOriginalExtension(); // Nom unique pour l'image
+        //     $filePath = $image->storeAs('profil_images', $imageName, 'public'); // Stockage de l'image dans 'public/profile_images'
 
-        }
+        // }
+
+        $username = substr($authRequest->first_name, 0, 3) 
+                    . (strlen($authRequest->first_name) + strlen($authRequest->last_name))
+                    . strtoupper(substr($authRequest->last_name, -1));
 
         $data = [
-            'username' => 'username',
-            'first_name' => $authRequest->first_name,
-            'last_name' => $authRequest->last_name,
-            'email' => $authRequest->email,
-            'password' => $authRequest->password,
-            'password_confirmation' => $authRequest->password_confirmation,
+            // e($string) : Échappe des caractères spéciaux pour empêcher les injections XSS.
+            'username' => $username,
+            'first_name' => e($authRequest->first_name),
+            'last_name' => e($authRequest->last_name),
+            'email' => e($authRequest->email),
+            'password' => e($authRequest->password),
+            'password_confirmation' => e($authRequest->password_confirmation),
             'image' => $filePath,
         ];
 

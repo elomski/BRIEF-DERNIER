@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageSent;
 use App\Http\Requests\DiscutionRequest;
 use App\Http\Resources\UserResource;
 use App\Interfaces\DiscutionInterface;
+use App\Mail\FileSendEmail;
 use App\Responces\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class DiscutionController extends Controller
 {
@@ -17,32 +20,52 @@ class DiscutionController extends Controller
         $this->discutionInterface = $discutionInterface;
     }
 
-    public function send_m(DiscutionRequest $discutionRequest, $userId)
+    public function send_m(DiscutionRequest $discutionRequest, $userId, $userId2)
     {
-        $filePath = null;
+        $if_fille = false;
+        $filePaths = [];
+        $fileOriginalName = [];
+        $fileOriginalType = [];
+        $fileOriginalSize = [];
 
         if ($discutionRequest->hasFile('file')) {
 
-            $file = $discutionRequest->file('file');
-            $fileName = time() . '.' . $file->getClientOriginalExtension(); // Nom unique pour le fichier
-            $filePath = $file->storeAs('files', $fileName, 'public'); // Stockage de le fichier dans 'public/files'
+            $files = $discutionRequest->file('file');
 
+            $if_fille = true;
+
+            foreach ($files as $file) {
+                $fileOriginalName[] = $file->getClientOriginalName();
+                $fileOriginalType[] = $file->getClientOriginalExtension();
+                $fileOriginalSize[] = $file->getSize();
+
+                $fileName = time() . rand(10000, 99999) . '.' . $file->getClientOriginalExtension(); // Nom unique pour le fichier
+                $filePath = $file->storeAs(`/files/`, $fileName, 'public'); // Stockage de le fichier dans 'public/files'
+                
+                $filePaths[] = `/storage/` . $filePath;
+                $fileOriginalType[] = $file->getClientOriginalExtension();
+            }
         }
 
         $message = [
             'user_id' => $userId,
+            'user_id2' => $userId2,
             'message' => $discutionRequest->message,
-            'file' => $filePath
+            'file' => $filePaths,
+            'file_type' => $fileOriginalType,
+            'file_size' => $fileOriginalSize,
+            'file_name' => $fileOriginalName,
         ];
         DB::beginTransaction();
 
         try {
-            $discution = $this->discutionInterface->send_m($message);
+            $discution = $this->discutionInterface->send_m($message, $if_fille);
             DB::commit();
+            event(new MessageSent($discution));
 
             return ApiResponse::sendResponse(
-                true, 
-                [new UserResource(resource: $discution)], 
+                true,
+                [new UserResource(resource: $discution)],
                 'Opération effectuée.'
             );
         } catch (\Throwable $th) {
@@ -51,19 +74,27 @@ class DiscutionController extends Controller
             return $th;
             return ApiResponse::rollback($th);
         }
-
     }
 
-    public function show_m()
+    public function show_m($id1, $id2)
     {
-        $message = $this->discutionInterface->show_m();
+        $message = $this->discutionInterface->show_m($id1, $id2);
 
-        return ApiResponse::sendResponse(
-            true, 
-            $message, 
-            'Opération effectuée.'
-        );
+        if (!$message) {
+            return ApiResponse::sendResponse(
+                true,
+                $message,
+                'Message introuvable.'
+            );
+        } else {
+            return ApiResponse::sendResponse(
+                false,
+                $message,
+                'Opération effectuée.'
+            );
+        }
     }
+
 
     public function delete_m(string $id)
     {
