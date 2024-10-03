@@ -65,6 +65,22 @@ const sectionBottomCss = {
     color: 'white'
 }
 
+const sectionBottomCss2 = {
+    width: '28%',
+    height: '77%',
+    display: 'flex',
+    // justifyContent: 'center',
+    overflowY: 'scroll',
+    overflowX: 'hidden',
+    alignItems: 'center',
+    flexDirection: 'column',
+    backgroundColor: '#212121',
+    borderRadius: '20px',
+    padding: '15px 0 0 0',
+    margin: '0 0 10px 0',
+    color: 'white'
+}
+
 const profilDivCss = {
     width: '90%',
     maxWidth: '100%',
@@ -141,7 +157,7 @@ const iconesMenuCss = {
 }
 
 const discussioninputCss = {
-    width: '100%',
+    width: '50%',
     // backgroundColor: 'red',
     display: 'flex',
     alignItems: 'end',
@@ -227,6 +243,7 @@ export const BoxCss = {
     sectionTopCss,
     sectionCenterCss,
     sectionBottomCss,
+    sectionBottomCss2,
     profilDivCss,
     profilCss,
     topIconesCss,

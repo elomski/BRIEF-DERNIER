@@ -6,7 +6,12 @@ import { getRequest } from '../../js/httpRequest/axios';
 import { MdContacts } from 'react-icons/md';
 import { FaLockOpen, FaUserGroup } from 'react-icons/fa6';
 
-export default function Box1({ setUserSelection, setUserDiscussion, setGroupeSelection, setAddGroup }) {
+export default function Box1({
+    setUserSelection,
+    setUserDiscussion,
+    setGroupeSelection,
+    setAddGroup,
+}) {
     // export default function Box1() {
 
     // const handleUserClick1 = (user) => {
@@ -89,6 +94,7 @@ export default function Box1({ setUserSelection, setUserDiscussion, setGroupeSel
         // setUserImage(() => userResponse.data[0].image)
         // setUsername(userResponse.data.username);
         setName(() => userResponse.data[0].first_name + ' ' + userResponse.data[0].last_name);
+        setUserImage(() => userResponse.data[0].image);
     }
 
     const groupeRequestFunction = async (e) => {
@@ -150,9 +156,10 @@ export default function Box1({ setUserSelection, setUserDiscussion, setGroupeSel
     const onIconeClique = (listScreen) => {
         setListScreen(() => listScreen)
     };
-    
+
     const onGroupeIconeClique = () => {
         setAddGroup(() => true);
+        localStorage.setItem('floatScreen', 1);
     };
 
     return (
@@ -288,6 +295,7 @@ export default function Box1({ setUserSelection, setUserDiscussion, setGroupeSel
                                             >{user.username}</div>
                                         </div>
                                         <FaLockOpen />
+                                        {/* <input type="checkbox" /> */}
                                     </div>
                                 ) : (null)
 

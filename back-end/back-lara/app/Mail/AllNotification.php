@@ -17,7 +17,7 @@ class AllNotification extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(private $last_name, private $message)
+    public function __construct(private $last_name, private $emailMessage)
     {
         //
     }
@@ -42,7 +42,7 @@ class AllNotification extends Mailable
             view: 'mails.all_notification',
             with: [
                 'last_name' => $this->last_name,
-                'message' => $this->message,
+                'emailMessage' => $this->emailMessage,
             ]
         );
     }

@@ -170,8 +170,8 @@ export default function Box2({ userSelection, userDiscussion, groupeSelection })
       messageUrl = 'send_g_m/' + UserId1 + '/' + localStorage.getItem('groupe_id');
     }
 
-    console.log(userSelection)
-    console.log(userDiscussion)
+    // console.log(userSelection)
+    // console.log(userDiscussion)
     const messageResponse = await formDataRequest(messageUrl, messageFormData);
 
     if (messageResponse.success) {
@@ -251,6 +251,16 @@ export default function Box2({ userSelection, userDiscussion, groupeSelection })
     // return () => clearInterval(intervalId);
   }, []); // Le tableau vide [] signifie que cet effet s'exécute uniquement au premier rendu
 
+
+  /**
+   * Gère le clic sur l'icône "Ajouter des membres".
+   * Met à jour le state `floatScreen` pour afficher le formulaire d'ajout de membres.
+   */
+  const onAddMembersIconeClique = () => {
+    // setAddGroup(() => true);
+    localStorage.setItem('floatScreen', 2);
+  };
+
   return (
     <div style={BoxCss.container2Css}>
       <style>
@@ -310,7 +320,9 @@ export default function Box2({ userSelection, userDiscussion, groupeSelection })
         )
         }
         <div style={BoxCss.topIconesCss}>
-          <CgUserAdd size={30} />
+          <CgUserAdd
+            size={30}
+            onClick={onAddMembersIconeClique}/>
           <GoKebabHorizontal size={30} />
         </div>
       </div>

@@ -22,7 +22,7 @@ class GroupeMemberRepository implements GroupeMemberInterface
 
     public function addMember(array $data)
     {
-        $message = 'null';
+        $emailMessage = 'null';
         $userData = null;
         $groupeMembers = GroupeMember::where('groupe_id', $data['groupe_id'])->pluck('user_id');
         $user = GroupeMember::where('user_id', $data['user_id'])
@@ -33,18 +33,19 @@ class GroupeMemberRepository implements GroupeMemberInterface
         if ($user)
             return false;
         else {
-            $index = 0;
-            // $email = [];
-            $message = 'Le groupe s\'agrandit !!! Vous avez un nouveau membre dans le groupe ' . $groupe->name;
+            // $index = 0;
+            $email = [];
+            $emailMessage = 'Le groupe s\'agrandit !!! Vous avez un nouveau membre dans le groupe ' . $groupe->name;
+            // $emailMessage = '1234';
             foreach ($groupeMembers as $groupeMember) {
 
                 $userData = User::where('id', $groupeMember)->first();
                 $email = $userData->email;
-                $index++;
+                // $index++;
                 Mail::to($email)->send(
                     new AllNotification(
                         $userData->last_name,
-                        $message,
+                        $emailMessage,
                     )
                 );
             }

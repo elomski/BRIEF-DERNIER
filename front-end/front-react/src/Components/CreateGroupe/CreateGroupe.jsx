@@ -5,6 +5,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { FaClosedCaptioning } from 'react-icons/fa';
 import { CgClose } from 'react-icons/cg';
 import AddGroupForm from '../AddGroupForm/AddGroupForm';
+import AddMembers from '../AddMembers/AddMembers';
 
 export default function CreateGroupe({ addGroup, setAddGroup }) {
 
@@ -42,7 +43,8 @@ export default function CreateGroupe({ addGroup, setAddGroup }) {
                 onClick={() => (onOtherClique())}
             >
                 <ToastContainer autoClose={2500} />
-                <AddGroupForm />
+                {/* <AddGroupForm /> */}
+                <AddMembers />
                 {/* <CgClose size={20} style={{ cursor: 'pointer' }} onClick={() => (onOtherClique())} /> */}
             </div>
             {/* {
