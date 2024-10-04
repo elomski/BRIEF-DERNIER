@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
 import { getRequest, postRequest } from '../../js/httpRequest/axios';
+import React, { useEffect, useState } from 'react'
 import { BoxCss } from '../Box/BoxStyles';
 import { FaLockOpen } from 'react-icons/fa';
 import { toast } from 'react-toastify';
@@ -9,19 +9,13 @@ export default function AddMembers() {
   const [allUser, setAllUser] = useState([]);
   const [userId, setUserId] = useState(localStorage.getItem('userId'));
   const [groupId, setGroupId] = useState(null);
+  const [email, setEmail] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
 
+  useEffect(() => {
     // setUserId(storedUserId); // Mettre à jour le state avec l'ID de l'utilisateur
     userRequestFunction();
-    // groupeRequestFunction();
-    // groupeRequestFunction();
-    // localStorage.setItem('if_add_groups', '0');
-    // console.log(storedUserId)
-    // console.log(userId)
-    // console.log(username)
-    // console.log(name)
     setInterval(() => {
       setGroupId(() => localStorage.getItem('group_id'));
     }, 1000);
@@ -40,37 +34,11 @@ export default function AddMembers() {
       console.log(allUser)
     };
 
-    // const fetchMessages = async () => {
-    //     const allMessagesResponse = await getRequest(`show_m/${userId}/${userId2}2`);
-    //     // const userData = await allUserResponse.json();
-    //     // setAllUser(userData); // Supposons que data est un tableau d'utilisateurs
-    //     setAllMessage(() => allMessagesResponse.data)
-    //     handleUserClick2((JSON.stringify(allMessagesResponse.data)))
-    //     console.log(allMessagesResponse.data)
-    // };
-
     fetchUsers();
-    // fetchMessages();
-
-    // Récupérer l'ID de l'utilisateur à partir du localStorage
-    // ---------------const storedUserId = localStorage.getItem('userId');
-    // -----------------const userResponse = await getRequest('users_show/' + storedUserId);
-    // let newUsername = userResponse.data.username
-    // console.log(userResponse)
-    // setUsername(() => userResponse.data[0].username)
-    // setUserImage(() => userResponse.data[0].image)
-    // setUsername(userResponse.data.username);
-    // ---------------setName(() => userResponse.data[0].first_name + ' ' + userResponse.data[0].last_name);
   }
 
   const handleSubmit = async (userId) => {
 
-    // const groupFormData = new FormData();
-    // groupFormData.set('name', name);
-    // groupFormData.set('description', description);
-
-    // const UserId = localStorage.getItem('userId');
-    // const groupId = localStorage.getItem('group_id')
     const addMember = `addMember/${userId}/${groupId}`;
     const addResponse = await postRequest(addMember);
     console.log(groupId)
@@ -105,10 +73,41 @@ export default function AddMembers() {
 
   }
 
+  const handleSubmit2 = async (e) => {
+    e.preventDefault();
+    // setIsLoading(true);
+
+    const addOtherFormData = new FormData();
+    addOtherFormData.set('email', email);
+
+    const addOtherMember = `addOtherMember/${groupId}/${userId}`;
+    // const addOtherResponse = await postRequest(addOtherMember, addOtherFormData);
+    console.log(localStorage.getItem('token'))
+    const addOtherResponse = await postRequest(addOtherMember, addOtherFormData);
+
+    if (addOtherResponse.success != false) {
+      // const addGroupeMemberResponse = await postRequest(`addMember/${localStorage.getItem('userId')}/${addResponse.data[0].id}`);
+
+      // console.log(addGroupeMemberResponse);
+      console.log(addOtherResponse.data[0].id);
+
+      toast.success(addOtherResponse.message);
+      setIsLoading(false);
+      // localStorage.setItem('if_add_groups', false);
+
+    } else {
+      console.log(addOtherResponse);
+      toast.error(addOtherResponse.message);
+      setIsLoading(false);
+    }
+
+  }
+
 
   return (
     <div
       style={BoxCss.sectionBottomCss2}
+      onClick={e => e.stopPropagation()}
     >
       <style>
         {`
@@ -140,8 +139,35 @@ export default function AddMembers() {
               border-width: 0 0 5px 0;
               // background-color: red
           }
+          .email_input {
+              width: 100%;
+              height: 30px;
+              border: none;
+              border-radius: 20px;
+              padding: 0 10px;
+          }
+          .email_input:active {
+              background-color: red;
+          }
+          .email_input:focus {
+              background-color: #ccc;
+              outline: none;
+              // border: 1px solid white;
+          }
         `}
       </style>
+      <p>Ajout d'un nouveau membre dans "{localStorage.getItem('groupeName')}"</p>
+      <form onSubmit={handleSubmit2} action="" style={{ display: 'flex', gap: '10px' }}>
+        <input
+          type="email"
+          className='email_input'
+          placeholder='Email de personnes extérieurs'
+          onChange={(e) => {
+            setEmail(e.target.value)
+          }}
+        />
+        <button>Inviter</button>
+      </form>
 
       {
         allUser && allUser.length > 0 ? (
@@ -155,7 +181,6 @@ export default function AddMembers() {
                 style={BoxCss.allUserCss}
                 className='hoverUser'
                 key={user.id}
-                onClick={e => e.stopPropagation()}
               // onClick={() => (
               //   // handleUserClick1(user),
               //   // setUserId2(() => user.id),

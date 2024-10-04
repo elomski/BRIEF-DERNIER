@@ -29,7 +29,6 @@ class GroupeDiscutionIRepository implements GroupeDiscutionInterface
             }
         };
 
-
         if ($if_fille) {
             $user = User::find($data['user_id']);
             $groupe_members = GroupeMember::where('groupe_id', $data['groupe_id'])->pluck('user_id');

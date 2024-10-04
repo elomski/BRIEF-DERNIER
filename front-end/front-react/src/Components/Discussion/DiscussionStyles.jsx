@@ -1,16 +1,16 @@
 import React from 'react'
 
 const leftDiscCss = {
-    // backgroundColor: "red",
-    width: 'auto',
+    // backgroundColor: "yellow",
+    width: '100%',
     display: "grid",
-    gridTemplateColumns: "auto 1fr",
+    gridTemplateColumns: "auto 100px",
 }
 const rightDiscCss = {
-    // backgroundColor: "red",
-    width: 'auto',
+    // backgroundColor: "yellow",
+    width: '100%',
     display: "grid",
-    gridTemplateColumns: "1fr auto",
+    gridTemplateColumns: "100px auto",
 }
 
 const textDivRightCss = {

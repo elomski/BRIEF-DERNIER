@@ -17,7 +17,7 @@ class OtherGroupeMembeController extends Controller
         $this->otherGroupeMemberInterface = $otherGroupeMemberInterface;
     }
 
-    public function addOtherMember(OtherGroupeMemberRequest $otherGroupeMemberRequest, string $groupeId, string $userId, string $url)
+    public function addOtherMember(OtherGroupeMemberRequest $otherGroupeMemberRequest, string $groupeId, string $userId)
     {
         $data = [
             'email' => $otherGroupeMemberRequest->email,
@@ -27,7 +27,7 @@ class OtherGroupeMembeController extends Controller
         DB::beginTransaction();
 
         try {
-            $groupe = $this->otherGroupeMemberInterface->addOtherMember($data, $userId, $url);
+            $groupe = $this->otherGroupeMemberInterface->addOtherMember($data, $userId);
 
             DB::commit();
             return ApiResponse::sendResponse(true, [new UserResource($groupe)], 'Invitation envoyer.', $groupe ? 200 : 400);

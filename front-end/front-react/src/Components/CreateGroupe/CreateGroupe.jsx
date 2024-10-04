@@ -7,10 +7,11 @@ import { CgClose } from 'react-icons/cg';
 import AddGroupForm from '../AddGroupForm/AddGroupForm';
 import AddMembers from '../AddMembers/AddMembers';
 
-export default function CreateGroupe({ addGroup, setAddGroup }) {
+export default function CreateGroupe({ addGroup, setAddGroup, addGroupSelected, setAddGroupSelected }) {
 
     const onOtherClique = () => {
         setAddGroup(() => false);
+        setAddGroupSelected(() => false);
     }
 
 
@@ -26,8 +27,9 @@ export default function CreateGroupe({ addGroup, setAddGroup }) {
                         align-items: center;
                         justify-content: center;
                         gap: 20px;
-                        position: absolute;
+                        position: fixed;
                         backdrop-filter: blur(2px);
+                        // background-color: green;
                     }
                     .group_add_show {
                         display: flex;
@@ -43,8 +45,14 @@ export default function CreateGroupe({ addGroup, setAddGroup }) {
                 onClick={() => (onOtherClique())}
             >
                 <ToastContainer autoClose={2500} />
-                {/* <AddGroupForm /> */}
-                <AddMembers />
+                {
+                    addGroupSelected ? (<AddGroupForm />) : (
+                        localStorage.getItem('groupeName') ? (<AddMembers />) : (
+                            <p className='test'>Veuillez choisir un groupe</p>
+                        )
+                        // <AddMembers />
+                    )
+                }
                 {/* <CgClose size={20} style={{ cursor: 'pointer' }} onClick={() => (onOtherClique())} /> */}
             </div>
             {/* {

@@ -83,7 +83,7 @@ const sectionBottomCss2 = {
 
 const profilDivCss = {
     width: '90%',
-    maxWidth: '100%',
+    // maxWidth: '100%',
     height: '60px',
     display: 'flex',
     padding: '0 8px 0 8px',
@@ -138,7 +138,21 @@ const discussionCss = {
     flexDirection: 'column',
     // backgroundColor: 'blue',
     // borderRadius: '20px 20px 0 0',
-    padding: '300px 0 0 0',
+    padding: '120px 0 0 0',
+    gap: '8px',
+    margin: '0 0 10px 0',
+    // backgroundImage: 'linear-gradient(to bottom, #E8E8FF, white)',
+}
+
+const discussionCss2 = {
+    width: 'auto',
+    height: 'auto',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'end',
+    flexDirection: 'column',
+    // backgroundColor: 'red',
+    // borderRadius: '20px 20px 0 0',
     gap: '8px',
     margin: '0 0 10px 0',
     // backgroundImage: 'linear-gradient(to bottom, #E8E8FF, white)',
@@ -221,11 +235,12 @@ const filesZonesCss = {
     maxHeight: '150px',
     overflowY: 'scroll',
     overflowX: 'hidden',
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
     textAlign: 'left',
     padding: '0 0 0 10px',
     margin: '0',
     borderRadius: '10px',
+    border: '1px solid white'
 }
 
 const noMessage = {
@@ -251,6 +266,7 @@ export const BoxCss = {
     allUserCss,
     container2Css,
     discussionCss,
+    discussionCss2,
     discussioninputCss,
     discussionButton,
     fileButton,

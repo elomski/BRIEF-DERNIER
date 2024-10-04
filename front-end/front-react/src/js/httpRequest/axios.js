@@ -2,9 +2,14 @@ import axios from "axios";
 
 const apiUrl = 'http://127.0.0.1:8000/api/v1.0.0/';
 
+
 export async function postRequest(url, data) {
     try {
-        const response = await axios.post(`${apiUrl}${url}`, data);
+        const response = await axios.post(
+            `${apiUrl}${url}`,
+            data,
+            { headers: { 'Authorization': `Bearer ` + localStorage.getItem('token'), } }
+        );
         return response.data;
     } catch (error) {
         console.error(error);
@@ -14,11 +19,16 @@ export async function postRequest(url, data) {
 
 export async function formDataRequest(url, data) {
     try {
-        const response = await axios.post(`${apiUrl}${url}`, data, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
+        const response = await axios.post(
+            `${apiUrl}${url}`,
+            data,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ` + localStorage.getItem('token'),
+                }
             }
-        });
+        );
         return response.data;
     } catch (error) {
         console.error(error);
@@ -28,7 +38,10 @@ export async function formDataRequest(url, data) {
 
 export async function getRequest(url) {
     try {
-        const response = await axios.get(`${apiUrl}${url}`);
+        const response = await axios.get(
+            `${apiUrl}${url}`,
+            { headers: { 'Authorization': `Bearer ` + localStorage.getItem('token'), } }
+        );
         return response.data;
     } catch (error) {
         console.error(error);
