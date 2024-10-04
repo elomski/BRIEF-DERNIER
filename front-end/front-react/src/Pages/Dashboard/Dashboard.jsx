@@ -10,6 +10,7 @@ export default function Dashboard() {
   const [groupeSelection, setGroupeSelection] = useState(null); // État partagé
   const [userDiscussion, setUserDiscussion] = useState(null); // État partagé
   const [addGroup, setAddGroup] = useState(false); // État partagé
+  const [addGroupSelected, setAddGroupSelected] = useState(false); // État partagé
 
   return (
     <div style={DashboardCss.containerCss}>
@@ -18,15 +19,18 @@ export default function Dashboard() {
         setUserDiscussion={setUserDiscussion}
         setGroupeSelection={setGroupeSelection}
         setAddGroup={setAddGroup}
-      />
+        setAddGroupSelected={setAddGroupSelected}
+        />
       <Box2
         userSelection={userSelection}
         userDiscussion={userDiscussion}
         groupeSelection={groupeSelection}
-      />
+        />
       <CreateGroupe
         addGroup={addGroup}
+        addGroupSelected={addGroupSelected}
         setAddGroup={setAddGroup}
+        setAddGroupSelected={setAddGroupSelected}
 
       />
       {/* {

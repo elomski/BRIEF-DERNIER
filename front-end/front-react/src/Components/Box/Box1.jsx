@@ -6,12 +6,13 @@ import { getRequest } from '../../js/httpRequest/axios';
 import { MdContacts } from 'react-icons/md';
 import { FaLockOpen, FaUserGroup } from 'react-icons/fa6';
 
-export default function Box1({ setUserSelection, setUserDiscussion, setGroupeSelection, setAddGroup }) {
-    // export default function Box1() {
-
-    // const handleUserClick1 = (user) => {
-    //     setUserSelection(user); // Met à jour l'état partagé
-    // };
+export default function Box1({
+    setUserSelection,
+    setUserDiscussion,
+    setGroupeSelection,
+    setAddGroup,
+    setAddGroupSelected
+}) {
 
     const handleUserClick1 = (user) => {
         localStorage.setItem('username', user.username); // Enregistre l'ID de l'utilisateur dans le localStorage(user);
@@ -31,20 +32,6 @@ export default function Box1({ setUserSelection, setUserDiscussion, setGroupeSel
         setGroupeSelection(groupe);
     };
 
-    // const handleUserClick2 = (message) => {
-    //     setUserDiscussion(message); // Met à jour l'état partagé
-    // };
-
-    // const handleGroupeClick1 = (groupe) => {
-    //     setUserSelection(groupe); // Met à jour l'état partagé
-    // };
-
-    // const handleGroupeClick2 = (message) => {
-    //     setUserDiscussion(message); // Met à jour l'état partagé
-    // };
-
-    // const UserId1 = localStorage.getItem('userId');
-
     const [userId, setUserId] = useState(null);
     const [userId2, setUserId2] = useState(null);
     const [userImage, setUserImage] = useState(null);
@@ -61,98 +48,48 @@ export default function Box1({ setUserSelection, setUserDiscussion, setGroupeSel
 
         const fetchUsers = async () => {
             const allUserResponse = await getRequest('users_index');
-            // const userData = await allUserResponse.json();
-            // setAllUser(userData); // Supposons que data est un tableau d'utilisateurs
             console.log(allUserResponse)
             setAllUser(() => allUserResponse.data[0])
             console.log(allUser)
         };
 
-        // const fetchMessages = async () => {
-        //     const allMessagesResponse = await getRequest(`show_m/${userId}/${userId2}2`);
-        //     // const userData = await allUserResponse.json();
-        //     // setAllUser(userData); // Supposons que data est un tableau d'utilisateurs
-        //     setAllMessage(() => allMessagesResponse.data)
-        //     handleUserClick2((JSON.stringify(allMessagesResponse.data)))
-        //     console.log(allMessagesResponse.data)
-        // };
-
         fetchUsers();
-        // fetchMessages();
 
         // Récupérer l'ID de l'utilisateur à partir du localStorage
         const storedUserId = localStorage.getItem('userId');
         const userResponse = await getRequest('users_show/' + storedUserId);
-        // let newUsername = userResponse.data.username
-        // console.log(userResponse)
-        // setUsername(() => userResponse.data[0].username)
-        // setUserImage(() => userResponse.data[0].image)
-        // setUsername(userResponse.data.username);
         setName(() => userResponse.data[0].first_name + ' ' + userResponse.data[0].last_name);
+        setUserImage(() => userResponse.data[0].image);
     }
 
     const groupeRequestFunction = async (e) => {
 
-        // const fetchUsers = async () => {
-        //     const allUserResponse = await getRequest('users_index');
-        //     // const userData = await allUserResponse.json();
-        //     // setAllUser(userData); // Supposons que data est un tableau d'utilisateurs
-        //     console.log(allUserResponse)
-        //     setGroupe(() => allUserResponse.data[0])
-        //     console.log(allUser)
-        // };
-
         const fetchGroupes = async () => {
             const allGroupeResponse = await getRequest(`showAllForUser/${localStorage.getItem('userId')}`);
-            // const userData = await allUserResponse.json();
-            // setAllUser(userData); // Supposons que data est un tableau d'utilisateurs
-            // setAllMessage(() => allGroupeResponse.data)
             setGroupe(() => allGroupeResponse.data[0])
             console.log(allGroupeResponse.data[0])
         };
 
-        // const fetchMessages = async () => {
-        //     const allMessagesResponse = await getRequest(`show_m/${userId}/${userId2}`);
-        //     // const userData = await allUserResponse.json();
-        //     // setAllUser(userData); // Supposons que data est un tableau d'utilisateurs
-        //     setAllMessage(() => allMessagesResponse.data)
-        //     handleUserClick2((JSON.stringify(allMessagesResponse.data)))
-        //     console.log(allMessagesResponse.data)
-        // };
-
         fetchGroupes();
-        // fetchMessages();
 
-        // Récupérer l'ID de l'utilisateur à partir du localStorage
         const storedGroupeId = localStorage.getItem('userId');
         const userResponse = await getRequest('users_show/' + storedGroupeId);
-        // let newUsername = userResponse.data.username
-        // console.log(userResponse)
-        // setUsername(() => userResponse.data[0].username)
-        // setUserImage(() => userResponse.data[0].image)
-        // setUsername(userResponse.data.username);
         setName(() => userResponse.data[0].first_name + ' ' + userResponse.data[0].last_name);
     }
 
     useEffect(() => {
-
-        // setUserId(storedUserId); // Mettre à jour le state avec l'ID de l'utilisateur
         userRequestFunction();
-        // groupeRequestFunction();
         groupeRequestFunction();
-        // localStorage.setItem('if_add_groups', '0');
-        // console.log(storedUserId)
-        // console.log(userId)
-        // console.log(username)
-        // console.log(name)
+        localStorage.setItem('groupeName', '');
     }, []);
 
     const onIconeClique = (listScreen) => {
         setListScreen(() => listScreen)
     };
-    
+
     const onGroupeIconeClique = () => {
         setAddGroup(() => true);
+        localStorage.setItem('floatScreen', 1);
     };
 
     return (
@@ -218,12 +155,13 @@ export default function Box1({ setUserSelection, setUserDiscussion, setGroupeSel
                         className='icones'
                         color='#6E5FB1'
                         size={30}
+                        onClick={() => (onGroupeIconeClique())}
                     />
                     <IoCreate
                         className='icones'
                         color='#6E5FB1'
                         size={30}
-                        onClick={() => (onGroupeIconeClique())}
+                        onClick={() => (onGroupeIconeClique(), setAddGroupSelected(() => true))}
                     />
                 </div>
             </div>
@@ -288,6 +226,7 @@ export default function Box1({ setUserSelection, setUserDiscussion, setGroupeSel
                                             >{user.username}</div>
                                         </div>
                                         <FaLockOpen />
+                                        {/* <input type="checkbox" /> */}
                                     </div>
                                 ) : (null)
 

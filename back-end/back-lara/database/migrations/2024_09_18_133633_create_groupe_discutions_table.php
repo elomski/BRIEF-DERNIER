@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('groupe_id')->nullable();
-            $table->longText('message');
+            $table->longText('message')->nullable();
             $table->string('file')->nullable();
             $table->String('file_type')->nullable();
             $table->String('file_size')->nullable();

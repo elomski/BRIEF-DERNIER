@@ -19,10 +19,10 @@ class OtherGroupeMembeRepository implements OtherGroupeMemberInterface
     //     //
     // }
 
-    public function addOtherMember(array $data, string $id, string $url)
+    public function addOtherMember(array $data, string $id)
     {
         $otherUser = OtherGroupeMember::create($data);
-        // $url =  "";
+        $url =  "http://localhost:5173/register";
         $user = User::where('id', $id)->first();
         $name = $user->first_name;
 

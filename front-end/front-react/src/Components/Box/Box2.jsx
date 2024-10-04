@@ -14,6 +14,7 @@ import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
 import { CgAdd, CgAddR, CgUserAdd } from 'react-icons/cg';
 import { BiAddToQueue } from 'react-icons/bi';
+import { toast, ToastContainer } from 'react-toastify';
 // import { format } from 'date-fns';
 
 export default function Box2({ userSelection, userDiscussion, groupeSelection }) {
@@ -42,20 +43,21 @@ export default function Box2({ userSelection, userDiscussion, groupeSelection })
 
       setUsername2(() => userSelection.username);
       setUserImage2(() => userSelection.image);
-      // setUserId2(() => localStorage.getItem('user_id2'));
-      // console.log(UserId2 + 'dfsv')
-      // setUsername(userResponse.data.username);
       setName2(() => userSelection.first_name + ' ' + userSelection.last_name);
 
       //------------------------------------
       setMessageIsLoading(false);
-      // fetchMessages();
-
-      // console.log(userId2)
 
     }
     userRequestFunction();
-    // groupeMessageFunction();
+    // Mettre à jour les messages toutes les 5 secondes
+    // const intervalId = setInterval(() => {
+    //   userRequestFunction();
+    // }, 2000); // 5000 ms = 5 secondes
+
+    // // Nettoyer l'intervalle au démontage du composant
+    // return () => clearInterval(intervalId);
+    // // groupeMessageFunction();
   }, [userSelection]);
 
   useEffect(() => {
@@ -64,48 +66,27 @@ export default function Box2({ userSelection, userDiscussion, groupeSelection })
 
       setUsername2(() => groupeSelection.name);
       setUserImage2(() => groupeSelection.image);
-      // setUserId2(() => localStorage.getItem('user_id2'));
-      // console.log(UserId2 + 'dfsv')
-      // setUsername(userResponse.data.username);
       setName2(() => groupeSelection.description);
 
       //------------------------------------
       setMessageIsLoading(false);
-      // fetchMessages();
-
-      // console.log(userId2)
 
     }
-    // userRequestFunction();
     groupeMessageFunction();
+    // // Mettre à jour les messages toutes les 5 secondes
+    // const intervalId = setInterval(() => {
+    //   groupeMessageFunction();
+    // }, 2000); // 5000 ms = 5 secondes
+
+    // // Nettoyer l'intervalle au démontage du composant
+    // return () => clearInterval(intervalId);
   }, [groupeSelection]);
-
-  //   const fetchMessages = async () => {
-  //     const allMessagesResponse = await getRequest(`show_m/${UserId1}/${UserId2}`);
-  //     // const userData = await allUserResponse.json();
-  //     // setAllUser(userData); // Supposons que data est un tableau d'utilisateurs
-  //     setAllMessage(() => allMessagesResponse)
-  //     console.log(UserId2)
-  // };
-
-
-  // if (userSelection) {
-  //   setUsername2(() => userSelection.username)
-  //   setUserImage2(() => userSelection.image)
-  //   setUserId2(() => userSelection.id)
-  //   // setUsername(userResponse.data.username);
-  //   setName2(() => userSelection.first_name + ' ' + userSelection.last_name);
-  // }
 
 
   const userRequestFunction = async (e) => {
     // Récupérer l'ID de l'utilisateur à partir du localStorage
     const messageResponse = await getRequest(`show_m/${UserId1}/${UserId2}`);
     setAllMessage(() => messageResponse.data)
-    // let newUsername = userResponse.data.username
-    // console.log(UserId1)
-    // console.log(UserId2)
-    // console.log(allMessage)
   }
 
   const groupeMessageFunction = async (e) => {
@@ -113,25 +94,9 @@ export default function Box2({ userSelection, userDiscussion, groupeSelection })
     const messageResponse = await getRequest(`show_g_m/${groupeId}`);
     setAllMessage(() => messageResponse.data)
     console.log(messageResponse.data);
-
-    // let newUsername = userResponse.data.username
-    // console.log(UserId1)
-    // console.log(UserId2)
-    // console.log(allMessage)
   }
 
   const messagesArray = Array.isArray(allMessage) ? allMessage : [];
-  // console.log(messagesArray)
-  useEffect(() => {
-
-    // setUserId(storedUserId); // Mettre à jour le state avec l'ID de l'utilisateur
-    // userRequestFunction();
-    groupeMessageFunction();
-    // console.log(storedUserId)
-    // console.log(userId)
-    // console.log(username2)
-    // console.log(name2)
-  }, []);
 
   const handleFileChange = (event) => {
     setSelectedFiles([...event.target.files]); // Récupère tous les fichiers sous forme de tableau
@@ -141,11 +106,6 @@ export default function Box2({ userSelection, userDiscussion, groupeSelection })
 
     const messageFormData = new FormData();
     if (selectedFiles.length > 12) {
-      // for (let index = 0; index < 12; index++) {
-      //   messageFormData.append('file[]', selectedFiles[index])
-
-      //   console.log(selectedFiles)
-      // }
       window.alert('Vous ne pouvez pas envoyer plus de 12 fichier')
       return;
     } else {
@@ -154,9 +114,7 @@ export default function Box2({ userSelection, userDiscussion, groupeSelection })
       for (let index = 0; index < selectedFiles.length; index++) {
         messageFormData.append('file[]', selectedFiles[index])
 
-        // console.log(selectedFiles)
       }
-      // setUsername2(() => '')
     }
     // messageFormData.append('file[]', selectedFiles)
     let messageUrl = '';
@@ -170,15 +128,15 @@ export default function Box2({ userSelection, userDiscussion, groupeSelection })
       messageUrl = 'send_g_m/' + UserId1 + '/' + localStorage.getItem('groupe_id');
     }
 
-    console.log(userSelection)
-    console.log(userDiscussion)
     const messageResponse = await formDataRequest(messageUrl, messageFormData);
 
     if (messageResponse.success) {
       setInputMessage('');
       console.log(messageResponse)
+      setSelectedFiles(() => []);
     } else {
-      // console.error(messageResponse);
+      console.error(messageResponse);
+      toast.error('Impossible d\'envoyer le message');
     }
   }
 
@@ -237,22 +195,33 @@ export default function Box2({ userSelection, userDiscussion, groupeSelection })
   }, [allMessage]); // Défilement à chaque mise à jour de allMessages
 
 
-  useEffect(() => {
-    // Récupérer les messages initialement
-    userRequestFunction();
-    groupeMessageFunction();
+  // useEffect(() => {
+  //   // Récupérer les messages initialement
+  //   // userRequestFunction();
+  //   // groupeMessageFunction();
 
-    // Mettre à jour les messages toutes les 5 secondes
-    // const intervalId = setInterval(() => {
-    //   userRequestFunction();
-    // }, 5000); // 5000 ms = 5 secondes
+  //   Mettre à jour les messages toutes les 5 secondes
+  //   const intervalId = setInterval(() => {
+  //     userRequestFunction();
+  //   }, 5000); // 5000 ms = 5 secondes
 
-    // Nettoyer l'intervalle au démontage du composant
-    // return () => clearInterval(intervalId);
-  }, []); // Le tableau vide [] signifie que cet effet s'exécute uniquement au premier rendu
+  //   // Nettoyer l'intervalle au démontage du composant
+  //   return () => clearInterval(intervalId);
+  // }, []); // Le tableau vide [] signifie que cet effet s'exécute uniquement au premier rendu
+
+
+  /**
+   * Gère le clic sur l'icône "Ajouter des membres".
+   * Met à jour le state `floatScreen` pour afficher le formulaire d'ajout de membres.
+   */
+  const onAddMembersIconeClique = () => {
+    // setAddGroup(() => true);
+    localStorage.setItem('floatScreen', 2);
+  };
 
   return (
     <div style={BoxCss.container2Css}>
+      <ToastContainer autoClose={1500} />
       <style>
         {`
           /* Scrollbar pour Chrome, Safari et autres navigateurs WebKit */
@@ -292,15 +261,13 @@ export default function Box2({ userSelection, userDiscussion, groupeSelection })
             </img>
             <div>
               <div style={{
-                // backgroundColor: 'red',
                 fontSize: '14px',
                 fontWeight: 'bold',
-                // position: 'relative',
-                // top: '6px'
               }}>{username2}</div>
               <div
                 style={{ fontSize: '14px' }}
-              >{name2}  {UserId2}</div>
+                className='text-limit1'
+              >{name2}</div>
             </div>
           </div>
         ) : (
@@ -310,52 +277,42 @@ export default function Box2({ userSelection, userDiscussion, groupeSelection })
         )
         }
         <div style={BoxCss.topIconesCss}>
-          <CgUserAdd size={30} />
+          <CgUserAdd
+            size={30}
+            onClick={onAddMembersIconeClique} />
           <GoKebabHorizontal size={30} />
         </div>
       </div>
       <div style={BoxCss.discussionCss} className='' >
-        {
-          !messageIsLoading ? (allMessage && allMessage.length > 0 ? (
-            allMessage.map(messages => (
-              messages.user_id == UserId1 ? (
-                <Discussion_right
-                  text={messages.message}
-                  time={formatDate2(messages.created_at)}
-                  key={messages.id}
-                  file={messages.file}
-                />
-              ) : (
-                <Discussion_left
-                  text={messages.message}
-                  time={formatDate2(messages.created_at)}
-                  key={messages.id}
-                  file={messages.file}
-                />
-              ))
+        <div style={BoxCss.discussionCss2}>
+          {
+            !messageIsLoading ? (allMessage && allMessage.length > 0 ? (
+              allMessage.map(messages => (
+                messages.user_id == UserId1 ? (
+                  <Discussion_right
+                    text={messages.message}
+                    time={formatDate2(messages.created_at)}
+                    key={messages.id}
+                    file={messages.file}
+                  />
+                ) : (
+                  <Discussion_left
+                    text={messages.message}
+                    time={formatDate2(messages.created_at)}
+                    key={messages.id}
+                    file={messages.file}
+                  />
+                ))
+              )) : (
+              <div style={BoxCss.noMessage}>Aucune discussion trouvé</div>
             )) : (
-            <div style={BoxCss.noMessage}>Aucune discussion trouvé</div>
-          )) : (
-            <div style={BoxCss.noMessage}>Chargement de la discussion...</div>
-          )
-        }
-        {/* <Discussion_right text={'Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l imprimerie depuis les années 1500, quand un imprimeur anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte. Il n a pas fait que survivre cinq siècles, mais s est aussi adapté à la bureautique informatique, sans que son contenu n en soit modifié.'} time={'00:00'} /> */}
-        {/* <Discussion_right text={'.'} time={'00:00'} /> */}
-        {/* <Discussion_left text={'.'} time={'00:00'} /> */}
-        {/* <Discussion_right text={'Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l imprimerie depuis les années 1500, quand un imprimeur anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte. Il n a pas fait que survivre cinq siècles, mais s est aussi adapté à la bureautique informatique, sans que son contenu n en soit modifié.'} time={'00:00'} /> */}
-        {/* <Discussion_left text={'Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l imprimerie depuis les années 1500, quand un imprimeur anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte. Il n a pas fait que survivre cinq siècles, mais s est aussi adapté à la bureautique informatique, sans que son contenu n en soit modifié.'} time={'00:00'} /> */}
+              <div style={BoxCss.noMessage}>Chargement de la discussion...</div>
+            )
+          }
+        </div>
       </div>
       <form onSubmit={handleSubmit} style={BoxCss.discussioninputCss}>
         <div style={BoxCss.anyInuptsCss}>
-          {/* <ul style={BoxCss.filesZonesCss}>
-            <div>sdfgvsdgbfbgfdbhdfgvsdgbfbgfdbhdfgvsdgbfbgfdbhg</div><br />
-            <div>sdfgvsdgbfbgfdbhg</div><br />
-            <div>sdfgvsdgbfbgfdbhg</div><br />
-            <div>sdfgvsdgbfbgfdbhg</div><br />
-            <div>sdfgvsdgbfbgfdbhg</div><br />
-            <div>sdfgvsdgbfbgfdbhg</div><br />
-            <div>sdfgvsdgbfbgfdbhg</div><br />
-          </ul> */}
           {selectedFiles.length > 0 && (
             <ul style={BoxCss.filesZonesCss}>
               {selectedFiles.map((file, index) => (

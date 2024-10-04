@@ -91,7 +91,7 @@ class AuthRepository implements AuthInterface
         } else {
             $email = $data['email'];
 
-            $check_if_in_groupes = OtherGroupeMember::where('email', $email);
+            $check_if_in_groupes = OtherGroupeMember::where('email', $email)->get();
 
             $userId = User::where('email', $email)->first();
             $userId->is_confirm = true;

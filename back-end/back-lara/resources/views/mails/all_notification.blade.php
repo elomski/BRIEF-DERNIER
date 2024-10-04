@@ -11,7 +11,7 @@
 <body style="font-family: Arial, sans-serif; line-height: 1.6;">
     <div style="text-align: center; padding: 20px;">
         <h3>Salut, {{ $last_name }}</h3><br />
-        <h4>{{ $message }}.</h4><br /><br /><br />
+        <h4>{{ $emailMessage }}.</h4><br /><br /><br />
         <h4>Votre appli de discussion préferer.</h4>
     </div>
 </body>

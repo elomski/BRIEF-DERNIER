@@ -40,7 +40,9 @@ export default function LoginForm() {
         if (loginResponse.success != false) {
 
             const userId = loginResponse.success.id;
+            const token = loginResponse.success.token;
             localStorage.setItem('userId', userId);
+            localStorage.setItem('token', token);
             toast.success(loginResponse.message);
             setIsLoading(false);
             setTimeout(function () {

@@ -8,6 +8,7 @@ export default function AddGroupForm() {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    
     // const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async (e) => {
